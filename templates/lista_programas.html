@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Programas de Corte{% endblock %}
+{% block content %}
+<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+        <h1 style="margin:0;">Programas de Corte</h1>
+        <a href="{{ url_for('programa_nuevo') }}" class="btn btn-primary">+ Nuevo Programa</a>
+    </div>
+</div>
+<div class="card">
+    {% if programas %}
+    <table>
+        <thead><tr><th>Nº Programa</th><th>Estado</th><th>Creado por</th><th>Fecha</th><th></th></tr></thead>
+        <tbody>
+        {% for p in programas %}
+        <tr>
+            <td><strong>{{ p.numero_programa }}</strong></td>
+            <td><span class="badge badge-{{ 'trazo' if 'Trazo' in p.estado else 'pendiente' }}">{{ p.estado }}</span></td>
+            <td>{{ p.creado_por or '—' }}</td>
+            <td>{{ p.fecha_creacion }}</td>
+            <td><a href="{{ url_for('ver_programa', prog_id=p.id) }}" class="btn btn-outline btn-sm">Ver</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color:#64748b;text-align:center;padding:2rem;">No hay programas. <a href="{{ url_for('programa_nuevo') }}">Crear el primero</a></p>
+    {% endif %}
+</div>
+{% endblock %}

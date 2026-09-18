@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #0f2744, #1a3a5c); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        .login-card { background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 400px; padding: 2.3rem 2rem; }
+        h1 { text-align: center; color: #0f2744; font-size: 1.4rem; margin-bottom: 0.3rem; }
+        p { text-align: center; color: #64748b; margin-bottom: 1.8rem; font-size: 0.92rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.88rem; }
+        input { width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; margin-bottom: 1.1rem; }
+        .btn { width: 100%; padding: 0.7rem; background: #3b82f6; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #2563eb; }
+        .alert { padding: 0.7rem 1rem; border-radius: 8px; margin-bottom: 1rem; background: #fee2e2; color: #991b1b; font-size: 0.9rem; }
+        .hint { margin-top: 1.4rem; padding: 0.9rem; background: #f8fafc; border-radius: 8px; font-size: 0.78rem; color: #64748b; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1>Sistema de Producción</h1>
+        <p>Inicia sesión para continuar</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}{% for c, m in messages %}<div class="alert">{{ m }}</div>{% endfor %}{% endif %}
+        {% endwith %}
+        <form method="POST">
+            <label>Usuario</label>
+            <input type="text" name="usuario" required autofocus>
+            <label>Contraseña</label>
+            <input type="password" name="password" required>
+            <button type="submit" class="btn">Entrar</button>
+        </form>
+        <div class="hint">
+            <strong>Usuarios:</strong><br>
+            admin / admin123<br>
+            programa / programa123<br>
+            trazo / trazo123<br>
+            corte / corte123<br>
+            gerente / gerente123<br>
+            habilitado / habilitado123
+        </div>
+    </div>
+</body>
+</html>
