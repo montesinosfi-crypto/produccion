@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Órdenes de Producción{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+        <h1 style="margin:0;">Órdenes de Producción</h1>
+        <div style="display:flex; gap:0.6rem;">
+            <a href="{{ url_for('agenda') }}" class="btn btn-outline">📅 Agenda Maquila</a>
+            <a href="{{ url_for('corte_nueva') }}" class="btn btn-primary">+ Nueva Orden</a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    {% if ordenes %}
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Orden</th>
+                    <th>Estado</th>
+                    <th>Piezas</th>
+                    <th>Maquilero</th>
+                    <th>Salida Maquila</th>
+                    <th>Habilitado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in ordenes %}
+                <tr>
+                    <td><strong>{{ o.numero_orden }}</strong></td>
+                    <td>
+                        <span class="badge badge-{{ o.estado_actual|lower|replace(' ', '_') }}">
+                            {{ o.estado_actual }}
+                        </span>
+                    </td>
+                    <td>{{ o.total_piezas or 0 }}</td>
+                    <td>{{ o.nombre_maquilero or '—' }}</td>
+                    <td>{{ o.fecha_salida_maquila or '—' }}</td>
+                    <td>{{ o.estado_habilitado or '—' }}</td>
+                    <td>
+                        <a href="{{ url_for('ver_orden', orden_id=o.id) }}" class="btn btn-outline btn-sm">Ver</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p style="text-align:center; color:#64748b; padding:2.5rem;">
+        No hay órdenes todavía.<br>
+        <a href="{{ url_for('corte_nueva') }}" style="margin-top:0.8rem; display:inline-block;">Crear la primera orden</a>
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

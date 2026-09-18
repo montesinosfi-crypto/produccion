@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Producción{% endblock %}</title>
+    <style>
+        :root {
+            --primary: #0f2744;
+            --primary-light: #1a3a5c;
+            --accent: #3b82f6;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --gray: #64748b;
+            --bg: #f1f5f9;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: #1e293b;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0.85rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: 0.3px;
+        }
+        .navbar-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 1.3rem;
+            font-size: 0.9rem;
+            transition: color 0.15s;
+        }
+        .navbar-links a:hover { color: white; }
+        .user-info {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-right: 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.4rem;
+            border: 1px solid #e2e8f0;
+        }
+        h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; }
+        h2 { font-size: 1.2rem; color: var(--primary); margin-bottom: 1rem; }
+        h3 { font-size: 1.05rem; color: var(--primary); margin-bottom: 0.7rem; }
+        .btn {
+            display: inline-block;
+            padding: 0.55rem 1.15rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.15s;
+        }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #047857; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-warning:hover { background: #b45309; }
+        .btn-outline {
+            background: white;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+        }
+        .btn-outline:hover { background: #f8fafc; }
+        .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.8rem; }
+        .alert {
+            padding: 0.85rem 1.1rem;
+            border-radius: 8px;
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th {
+            background: #f8fafc;
+            padding: 0.75rem 0.7rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+            color: #475569;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        td { padding: 0.7rem; border-bottom: 1px solid #f1f5f9; }
+        tr:hover { background: #f8fafc; }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-corte { background: #dbeafe; color: #1e40af; }
+        .badge-asignacion { background: #ffedd5; color: #9a3412; }
+        .badge-habilitado { background: #ede9fe; color: #5b21b6; }
+        .badge-en_maquila { background: #fef3c7; color: #92400e; }
+        .badge-terminado { background: #d1fae5; color: #065f46; }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            font-size: 0.875rem;
+            color: #334155;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .form-row > div { flex: 1; min-width: 160px; }
+        .actions { margin-top: 1.3rem; display: flex; gap: 0.7rem; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+    {% if session.get('user_id') %}
+    <nav class="navbar">
+        <div class="navbar-brand">Sistema de Producción</div>
+        <div class="navbar-links">
+            <a href="{{ url_for('index') }}">Órdenes</a>
+            <a href="{{ url_for('agenda') }}">Agenda Maquila</a>
+            <a href="{{ url_for('corte_nueva') }}">+ Nueva Orden</a>
+            <span class="user-info">{{ session.get('nombre') }} ({{ session.get('area') }})</span>
+            <a href="{{ url_for('logout') }}">Salir</a>
+        </div>
+    </nav>
+    {% endif %}
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

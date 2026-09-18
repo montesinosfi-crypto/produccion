@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}{% if orden %}Editar Corte{% else %}Nueva Orden - Corte{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% if orden %}Editar Corte – {{ orden.numero_orden }}{% else %}Nueva Orden de Producción (Corte){% endif %}</h1>
+    <p style="color:#64748b; margin-bottom:1.5rem;">
+        Solo se registran <strong>Modelo, Color y Total de Piezas</strong> (sin tallas).
+    </p>
+
+    <form method="POST">
+        {% if not orden %}
+        <div class="form-row">
+            <div>
+                <label>Número de Orden *</label>
+                <input type="text" name="numero_orden" required placeholder="Ej: OP-2026-015">
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="form-row">
+            <div>
+                <label>Fecha Inicio de Corte</label>
+                <input type="date" name="fecha_inicio" value="{{ corte.fecha_inicio if corte else '' }}">
+            </div>
+            <div>
+                <label>Fecha Final de Corte</label>
+                <input type="date" name="fecha_final" value="{{ corte.fecha_final if corte else '' }}">
+            </div>
+            <div>
+                <label>Fecha Entrega Tampografía</label>
+                <input type="date" name="fecha_entrega_tampografia" value="{{ corte.fecha_entrega_tampografia if corte else '' }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>¿Tampografía lista?</label>
+                <select name="tampografia_lista">
+                    <option value="No" {% if corte and corte.tampografia_lista == 'No' %}selected{% endif %}>No</option>
+                    <option value="Si" {% if corte and corte.tampografia_lista == 'Si' %}selected{% endif %}>Sí</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label>Observaciones</label>
+            <textarea name="observaciones" rows="2">{{ corte.observaciones if corte else '' }}</textarea>
+        </div>
+
+        <h3 style="margin-top:1.5rem; margin-bottom:0.8rem;">Líneas (Modelo + Color + Piezas)</h3>
+
+        <div id="lineas-container">
+            {% if lineas %}
+                {% for l in lineas %}
+                <div class="form-row linea-row" style="align-items:flex-end; margin-bottom:0.4rem;">
+                    <div>
+                        <label>Modelo</label>
+                        <input type="text" name="modelo[]" value="{{ l.modelo }}" required>
+                    </div>
+                    <div>
+                        <label>Color</label>
+                        <input type="text" name="color[]" value="{{ l.color }}" required>
+                    </div>
+                    <div>
+                        <label>Piezas Totales</label>
+                        <input type="number" name="piezas[]" min="0" value="{{ l.piezas_totales }}" required>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="form-row linea-row" style="align-items:flex-end; margin-bottom:0.4rem;">
+                    <div>
+                        <label>Modelo</label>
+                        <input type="text" name="modelo[]" placeholder="Modelo" required>
+                    </div>
+                    <div>
+                        <label>Color</label>
+                        <input type="text" name="color[]" placeholder="Color" required>
+                    </div>
+                    <div>
+                        <label>Piezas Totales</label>
+                        <input type="number" name="piezas[]" min="0" value="0" required>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <button type="button" class="btn btn-outline btn-sm" onclick="agregarLinea()" style="margin-bottom:1.5rem;">
+            + Agregar otra línea
+        </button>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">
+                {% if orden %}Guardar Cambios{% else %}Crear Orden{% endif %}
+            </button>
+            <a href="{% if orden %}{{ url_for('ver_orden', orden_id=orden.id) }}{% else %}{{ url_for('index') }}{% endif %}" class="btn btn-outline">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function agregarLinea() {
+    const container = document.getElementById('lineas-container');
+    const div = document.createElement('div');
+    div.className = 'form-row linea-row';
+    div.style = 'align-items:flex-end; margin-bottom:0.4rem;';
+    div.innerHTML = `
+        <div>
+            <label>Modelo</label>
+            <input type="text" name="modelo[]" placeholder="Modelo" required>
+        </div>
+        <div>
+            <label>Color</label>
+            <input type="text" name="color[]" placeholder="Color" required>
+        </div>
+        <div>
+            <label>Piezas Totales</label>
+            <input type="number" name="piezas[]" min="0" value="0" required>
+        </div>
+    `;
+    container.appendChild(div);
+}
+</script>
+{% endblock %}
