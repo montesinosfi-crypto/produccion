@@ -8,3 +8,5 @@ Usuarios:
 - gerente / gerente123
 - DISEÑO / DISEÑO123
 - ADUANA / ADUANA123
+- trazo / trazo123
+- habilitado / habilitaco123
