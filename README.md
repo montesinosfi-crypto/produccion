@@ -6,3 +6,5 @@ Usuarios:
 - admin / admin123
 - corte / corte123
 - gerente / gerente123
+- DISEÑO / DISEÑO123
+- ADUANA / ADUANA123
